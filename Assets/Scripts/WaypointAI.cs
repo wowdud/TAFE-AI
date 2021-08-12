@@ -16,13 +16,13 @@ public class WaypointAI : MonoBehaviour
     public GameObject CurrentGoal;
     public int listPos = 0;
 
+    public bool isAIon = true;
+        
     List<GameObject> pointList = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-
-
         pointList.Add(waypoint);
         pointList.Add(waypoint2);
         pointList.Add(waypoint3);
@@ -34,6 +34,11 @@ public class WaypointAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (isAIon == false)
+        {
+            return;
+        }
 
         float distance = Vector2.Distance(transform.position, CurrentGoal.transform.position);
 
