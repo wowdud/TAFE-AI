@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Behaviours : MonoBehaviour
 {
+    public Vector3 randPos;
+    public Vector2 screen;
 
     public enum State
     {
@@ -11,7 +13,7 @@ public class Behaviours : MonoBehaviour
         Stop,
     }
 
-    [SerializeField] private State state;
+    public State state;
     public SpriteRenderer sprite;
     private WaypointAI waypointAI;
 
@@ -60,6 +62,10 @@ public class Behaviours : MonoBehaviour
             Debug.LogError("no sprite mate");
         }
 
+        screen.x = Screen.width / 16;
+        screen.y = Screen.height / 9;
+
+        randPos = new Vector3(Random.Range(-screen.x, screen.x), Random.Range(-screen.y, screen.y), 0);
 
         waypointAI = GetComponent<WaypointAI>();
         if (waypointAI == null)
@@ -91,6 +97,7 @@ public class Behaviours : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         
     }
 }
