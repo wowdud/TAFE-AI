@@ -410,14 +410,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5413cf5d70361f458d5786de9e71ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedX: 5
-  speedY: 5
+  speed: 2
   waypoint: {fileID: 662779906}
   waypoint2: {fileID: 529605200}
   waypoint3: {fileID: 1049413482}
   waypoint4: {fileID: 580651732}
   CurrentGoal: {fileID: 0}
   listPos: 0
+  target: {fileID: 0}
   isAIon: 1
 --- !u!212 &326285992
 SpriteRenderer:
@@ -537,6 +537,7 @@ MonoBehaviour:
   screen: {x: 0, y: 0}
   state: 0
   sprite: {fileID: 326285992}
+  player: {fileID: 0}
 --- !u!1 &456732658
 GameObject:
   m_ObjectHideFlags: 0

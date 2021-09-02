@@ -11,27 +11,32 @@ public class Behaviours : MonoBehaviour
     {
         Wander,
         Stop,
+        Chase,
     }
 
     public State state;
     public SpriteRenderer sprite;
     private WaypointAI waypointAI;
+    public GameObject player;
 
     // Start is called before the first frame update
-    
+
     private IEnumerator WanderState()
     {
         print("Entered wander state");
-
+        waypointAI.isAIon = true;
         sprite.color = Color.green;
 
         while (state == State.Wander)
         {
-            waypointAI.isAIon = true;
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < 5.5f && player.activeSelf == true)
+            {
+                state = State.Chase;
+            }
             print("Still wandering");
             yield return null;
         }
-
         print("Leaving wander state");
         NextState();
 
@@ -39,20 +44,48 @@ public class Behaviours : MonoBehaviour
     private IEnumerator StopState()
     {
         print("Stopped state");
-
+        waypointAI.isAIon = false;
         sprite.color = Color.red;
 
         while (state == State.Stop)
         {
-           waypointAI.isAIon = false;
-           yield return null;
+            yield return new WaitForSeconds(1.5f);
+            state = State.Wander;
         }
-
+        waypointAI.isAIon = true;
         print("Exiting stop state");
         NextState();
-       
+
     }
-    
+
+    private IEnumerator ChaseState()
+    {
+        print("Chase state");
+
+        sprite.color = new Color(0.75f, 0, 1, 1);
+
+        while (state == State.Chase)
+        {
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < waypointAI.speed * Time.deltaTime)
+            {
+                player.SetActive(false);
+                state = State.Wander;
+            }
+            if (distance > 5.5f)
+            {
+                state = State.Stop;
+            }
+            waypointAI.target = player;
+            waypointAI.isAIon = true;
+            yield return null;
+        }
+        waypointAI.target = null;
+        print("Exiting chase state");
+        NextState();
+    }
+
+
     void Start()
     {
 
@@ -62,23 +95,25 @@ public class Behaviours : MonoBehaviour
             Debug.LogError("no sprite mate");
         }
 
-        screen.x = Screen.width / 16;
-        screen.y = Screen.height / 9;
-
-        randPos = new Vector3(Random.Range(-screen.x, screen.x), Random.Range(-screen.y, screen.y), 0);
-
         waypointAI = GetComponent<WaypointAI>();
         if (waypointAI == null)
         {
             Debug.LogError("no ai mate");
         }
+
+        PlayerScript playerFound = FindObjectOfType<PlayerScript>();
+        if (playerFound != null)
+        {
+            player = playerFound.gameObject;
+        }
+
         NextState();
 
     }
 
     private void NextState()
     {
-        switch(state)
+        switch (state)
         {
             case State.Wander:
                 StartCoroutine(WanderState());
@@ -87,7 +122,11 @@ public class Behaviours : MonoBehaviour
             case State.Stop:
                 StartCoroutine(StopState());
                 break;
-            
+
+            case State.Chase:
+                StartCoroutine(ChaseState());
+                break;
+
             default:
                 StartCoroutine(StopState());
                 break;
@@ -98,6 +137,6 @@ public class Behaviours : MonoBehaviour
     void Update()
     {
 
-        
+
     }
 }
