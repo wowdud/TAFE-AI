@@ -49,6 +49,7 @@ public class Behaviours : MonoBehaviour
 
         while (state == State.Stop)
         {
+            //AI waits 1.5 seconds, chooses a new target goal to move towards
             yield return new WaitForSeconds(1.5f);
             waypointAI.CurrentGoal = waypointAI.pointList[Random.Range(0, 6)];
             state = State.Wander;
@@ -68,11 +69,13 @@ public class Behaviours : MonoBehaviour
         while (state == State.Chase)
         {
             float distance = Vector2.Distance(transform.position, player.transform.position);
+            //Checks if the AI is close enough to the player to kill them
             if (distance < waypointAI.speed * Time.deltaTime)
             {
                 player.SetActive(false);
                 state = State.Wander;
             }
+            //Checks if the AI is far enough away from the player to leave chase state
             if (distance > 5.5f)
             {
                 state = State.Stop;
