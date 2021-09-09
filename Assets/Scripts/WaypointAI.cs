@@ -12,13 +12,14 @@ public class WaypointAI : MonoBehaviour
     public GameObject waypoint2;
     public GameObject waypoint3;
     public GameObject waypoint4;
+    public GameObject waypoint5;
     public GameObject CurrentGoal;
     public int listPos = 0;
     public GameObject target;
 
     public bool isAIon = true;
 
-    List<GameObject> pointList = new List<GameObject>();
+    public List<GameObject> pointList = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class WaypointAI : MonoBehaviour
         pointList.Add(waypoint2);
         pointList.Add(waypoint3);
         pointList.Add(waypoint4);
+        pointList.Add(waypoint5);
 
         CurrentGoal = pointList[0];
     }

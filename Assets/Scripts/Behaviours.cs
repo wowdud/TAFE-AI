@@ -50,6 +50,7 @@ public class Behaviours : MonoBehaviour
         while (state == State.Stop)
         {
             yield return new WaitForSeconds(1.5f);
+            waypointAI.CurrentGoal = waypointAI.pointList[Random.Range(0, 6)];
             state = State.Wander;
         }
         waypointAI.isAIon = true;
